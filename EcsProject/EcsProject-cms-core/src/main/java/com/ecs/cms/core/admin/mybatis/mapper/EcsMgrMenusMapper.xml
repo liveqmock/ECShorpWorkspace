@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecs.cms.core.admin.mybatis.mapper.EcsMgrMenusMapper" >
+  <resultMap id="BaseResultMap" type="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenus" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="parentid" property="parentid" jdbcType="INTEGER" />
+    <result column="create_dt" property="createDt" jdbcType="TIMESTAMP" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, menu_name, menu_url, parentid, create_dt, memo, status, version
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenusCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ecs_mgr_menus
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+      <if test="limitStart!=null &amp;&amp; limitStart!=-1" >
+        limit #{limitStart} , #{limitEnd}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ecs_mgr_menus
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ecs_mgr_menus
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenusCriteria" >
+    delete from ecs_mgr_menus
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenus" >
+    insert into ecs_mgr_menus (id, menu_name, menu_url, 
+      parentid, create_dt, memo, 
+      status, version)
+    values (#{id,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuUrl,jdbcType=VARCHAR}, 
+      #{parentid,jdbcType=INTEGER}, #{createDt,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenus" >
+    insert into ecs_mgr_menus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="parentid != null" >
+        parentid,
+      </if>
+      <if test="createDt != null" >
+        create_dt,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="createDt != null" >
+        #{createDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenusCriteria" resultType="java.lang.Integer" >
+    select count(*) from ecs_mgr_menus
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ecs_mgr_menus
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.menuName != null" >
+        menu_name = #{record.menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuUrl != null" >
+        menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentid != null" >
+        parentid = #{record.parentid,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDt != null" >
+        create_dt = #{record.createDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ecs_mgr_menus
+    set id = #{record.id,jdbcType=INTEGER},
+      menu_name = #{record.menuName,jdbcType=VARCHAR},
+      menu_url = #{record.menuUrl,jdbcType=VARCHAR},
+      parentid = #{record.parentid,jdbcType=INTEGER},
+      create_dt = #{record.createDt,jdbcType=TIMESTAMP},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      version = #{record.version,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenus" >
+    update ecs_mgr_menus
+    <set >
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="createDt != null" >
+        create_dt = #{createDt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenus" >
+    update ecs_mgr_menus
+    set menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      create_dt = #{createDt,jdbcType=TIMESTAMP},
+      memo = #{memo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      version = #{version,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

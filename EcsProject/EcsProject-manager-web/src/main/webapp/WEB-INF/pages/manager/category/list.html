@@ -1,0 +1,230 @@
+<!DOCTYPE html >
+<html>
+<head>
+<#include "/commons/manager/taglibs.html">
+<html>
+	<head>
+	<title>商品分类管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<#include "/commons/manager/head.html">
+</head>
+<body>
+	<table width="100%" id="categoryTree" toolbar="#categoryTreetb"></table>
+	<div id="categoryTreetb" style="padding: 3px; height: auto">
+		<div style="height: 30px;" class="datagrid-toolbar">
+			<span style="float: left;"><a href="javascript:void(0)" class="easyui-linkbutton" plain="true" icon="icon-add" id="addCategory">添加分类</a><a href="#"
+				class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="editCategory()">编辑</a><a href="#" class="easyui-linkbutton" plain="true" icon="icon-remove"
+				onclick="remvoeCategory()">删除</a></span> 
+				<span style="float: right">
+					<input id="iconListsearchbox" class="easyui-searchbox" data-options="searcher:iconListsearchbox,prompt:'请输入关键字',menu:'#iconListmm'"/>
+					<div id="iconListmm" style="width: 120px">
+						<div data-options="name:'iconName',iconCls:'icon-ok'  ">分类名称</div>
+					</div>
+				</span>
+		</div>
+		<input type="hidden" id="categoryId" name=""categoryId"" value="">
+	</div>
+		<script type="text/javascript">
+	 $(function () {
+			$('#categoryTree').treegrid({
+				idField : 'id',
+				treeField : 'text',
+				title : '商品分类管理',
+				url : 'nextLevelCat.json',
+				fit : true,
+				method :"get",
+				loadMsg : '数据加载中...',
+				pageSize : 10,
+				pagination : false,
+				pageList : [10, 20, 30],
+				sortOrder : 'asc',
+				rownumbers : true,
+				singleSelect : true,
+				fitColumns : true,
+				showFooter : true,
+				frozenColumns : [[]],
+				columns : [[{
+							field : 'id',
+							title : '编号',
+							hidden : true
+						}, {
+							field : 'text',
+							title : '分类名称',
+							width : 100
+						}, {
+							field : 'code',
+							title : '分类编码',
+							width : 100
+						},{
+							field : 'orders',
+							title : '排序',
+							width : 100
+						}, {
+							field : 'null',
+							title : '操作',
+							width : 100,
+							formatter : function (value, rec, index) {
+								if (!rec.id) {
+									return '';
+								}
+								var href = '';
+								href += "[<a href='#' type='delete' id='"+rec.id+"'>";
+								href += "删除</a>]";
+								href += "[<a href='#' type='update' id='"+rec.id+"'>";
+								href += "编辑</a>]";
+								return href;
+							}
+						}
+					]],
+				onLoadSuccess : function (data) {
+					$("#categoryTree").treegrid("clearSelections");
+					var $bodyView = $("#categoryTree").data('datagrid').dc.view2;
+					 $bodyView.find('a[id]').click(function(e) {
+			                var type = $(this).attr('type');
+			                var id = $(this).attr('id');
+			                if (type === 'delete') {
+			                	remvoeCategory(id);
+			                }
+			                if (type === 'update') {
+			                	editCategory(id);
+			                }
+			                e.stopPropagation();
+		            });
+				},
+				onClickRow : function (rowData) {
+					rowid = rowData.id;
+					gridname = 'categoryTree';
+				}
+			});
+			$('#categoryTree').treegrid('getPager').pagination({
+				beforePageText : '',
+				afterPageText : '/{pages}',
+				displayMsg : '{from}-{to}共{total}条',
+				showPageList : true,
+				showRefresh : true
+			});
+			$('#categoryTree').treegrid('getPager').pagination({
+				onBeforeRefresh : function (pageNumber, pageSize) {
+					$(this).pagination('loading');
+					$(this).pagination('loaded');
+				}
+			});
+			$("#addCategory").click(function(){
+				addCategory();
+			})
+		});
+	 	
+	 	function addCategory(){
+	 		add('添加分类',ctx+'/category/createCategory','typeGridTree',null,null)
+	 	}
+	 	
+	 	function reloadTable() {
+	 		try {
+	 			$('#categoryTree').datagrid('reload');
+	 			$('#categoryTree').treegrid('reload');
+	 		} catch (ex) {}
+
+	 	}
+	 	
+ 	  function remvoeCategory(id){
+		  if(!!!id){
+			  var row=getSelected();
+	 			if(!!row){
+				  id=row.id;
+	 			}
+		  }
+		  if(!!!id){
+			  $.alert("请选中要删除的记录！");
+			  return false;
+		  }
+ 		  $.messager.confirm('提示', '确认删除？', function(r) {
+		        if (r) {
+		            $.post(ctx + '/category/delete.json', {id: id}, function(rsp) {
+		            	 if (rsp.scode==="1") {
+		            		$('#categoryTree').treegrid('remove', id);
+		                } else {
+		                    $.alert(rsp.smsg);
+		                }
+		            });
+		        }
+		    });
+		}
+ 	  	
+ 	 	function editCategory(id){
+ 	 		if(!!!id){
+ 	 			var row=getSelected();
+ 	 			if(!!row){
+ 				  id=row.id;
+ 	 			}
+			}
+ 	 		if(!!!id){
+ 	 			$.alert("请选中要编辑的记录！");
+ 	 			return false;
+ 	 		}	
+ 	 		add('编辑分类',ctx+'/category/editCategory?id='+id,'typeGridTree',null,null);
+ 	 	}
+	 	  
+	 	  
+		function reloadcategoryTree() {	
+			$('#categoryTree').treegrid('reload');
+		}
+		
+		function getCategoryTreeSelected(field) {
+			return getSelected(field);
+		}
+		
+		
+	
+		function getSelected() {
+			var row = $('#categoryTree').treegrid('getSelected');
+			return row;
+		}
+		function getcategoryTreeSelections(field) {
+			var ids = [];
+			var rows = $('#categoryTree').treegrid('getSelections');
+			for (var i = 0; i < rows.length; i++) {
+				ids.push(rows[i][field]);
+			}
+			ids.join(',');
+			return ids
+		};
+		function getSelectRows() {
+			return $('#categoryTree').datagrid('getChecked');
+		}
+		function categoryTreesearch() {
+			var queryParams = $('#categoryTree').datagrid('options').queryParams;
+			$('#categoryTreetb').find('*').each(function () {
+				queryParams[$(this).attr('name')] = $(this).val();
+			});
+			$('#categoryTree').treegrid({
+				url : 'systemController.do?categoryTree&field=id,typename,code,',
+				pageNumber : 1
+			});
+		}
+		function dosearch(params) {
+			var jsonparams = $.parseJSON(params);
+			$('#categoryTree').treegrid({
+				url : 'systemController.do?categoryTree&field=id,typename,code,',
+				queryParams : jsonparams
+			});
+		}
+		function categoryTreesearchbox(value, name) {
+			var queryParams = $('#categoryTree').datagrid('options').queryParams;
+			queryParams[name] = value;
+			queryParams.searchfield = name;
+			$('#categoryTree').treegrid('reload');
+		}
+		$('#categoryTreesearchbox').searchbox({
+			searcher : function (value, name) {
+				categoryTreesearchbox(value, name);
+			},
+			menu : '#categoryTreemm',
+			prompt : '请输入查询关键字'
+		});
+		function searchReset(name) {
+			$("#" + name + "tb").find(":input").val("");
+			categoryTreesearch();
+		}
+	</script>
+</body>
+</html>

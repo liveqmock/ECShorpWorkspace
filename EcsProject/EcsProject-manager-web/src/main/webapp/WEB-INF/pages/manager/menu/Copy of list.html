@@ -1,0 +1,127 @@
+<!DOCTYPE html >
+<html>
+<head>
+<#include "/commons/manager/taglibs.html">
+<html>
+	<head>
+	<title>后台登录</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<#include "/commons/manager/head.html">
+</head>
+<body>
+	<div style="height:500px;">
+	<table class="easyui-datagrid" title="菜单管理列表" 
+			data-options="rownumbers:true,singleSelect:true,fit:true,method:'get',toolbar:'#tb'">
+	
+		<thead>
+			<tr>
+				<th data-options="field:'itemid',width:80">菜单ID</th>
+				<th data-options="field:'productid',width:200">菜单名称</th>
+				<th data-options="field:'listprice',width:180,align:'right'">菜单URL</th>
+				<th data-options="field:'unitcost',width:100,align:'right'">父级菜单</th>
+				<th data-options="field:'attr1',width:200">备注信息</th>
+				<th data-options="field:'attr1',width:80">菜单状态</th>
+				<th data-options="field:'status',width:100,align:'center'">执行操作</th>
+			</tr>
+		</thead>
+		<tbody>
+				   <#if (page.result?size > 0)>
+				   <#list page.result as menu>
+				      <tr>
+				        <td>${menu.id!''}</td>
+						<td>${menu.menuName!''}</td>
+						<td>${menu.menuUrl!''}</td>
+						<td>${menu.parentName!''}</td>
+						<td>${menu.memo!''}</td>
+						<td>
+						 <#if menu.getStatus()? exists && menu.getStatus() ==1 >
+						  启用
+						 <#else>
+						   停用 
+						 </#if>
+						</td>
+						<td>
+						  <a href="javascript:void(0);" onclick="editMenu('${menu.id}');" title="编辑">编辑</a>|
+						 <#if menu.getStatus()? exists && menu.getStatus() ==1 >
+						    <a href="javascript:void(0);" onclick="endMenu('${menu.id}','0')" title="停用">停用</a>
+						 <#else>
+						    <a href="javascript:void(0);" onclick="startMenu('${menu.id}','1')" title="启用">启用</a> 
+						 </#if>
+						 
+						</td>
+					 </tr>	
+				   </#list>
+				   <#else>
+				     <tr><td colspan="7"><font color="red">暂时没有查询到记录</font></td></tr>
+				   </#if>					
+				</tbody>
+	</table>
+	</div>
+	<div class="easyui-panel">
+		<div class="easyui-pagination" data-options="total:${page.totalCount},pageSize:${page.pageSize},pageNumber:${page.pageNo},pageList: [15,30,50],displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',onChangePageSize:function(){alert('aaaaa')},onSelectPage:function(pageNumber,pageSize){dataGripSelectPage(pageNumber,pageSize);}"></div>
+	</div>
+	<div id="tb" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+		</div>
+		<form method="GET" action="${ctx}/menulist">
+		<input name="pageNo" id="pageNo" type="hidden"/>
+		<input name="pageSize" id="pageSize" type="hidden"/>
+		<div>
+		  &nbsp;&nbsp;菜单名称：
+		  <input name="menuName" type="text" id="menu_name" value="${(menu_name!'')?html}" size="20" />
+	          &nbsp;&nbsp;&nbsp;
+	      <label> 菜单状态:
+	          <select name="menu_status" id="menuStatus">
+	           <option value="">--请选择--</option>
+	           <#if menu_status?? && menu_status ==1>
+	              <option value="1" selected="selected">启用</option>
+	           <#else>
+	              <option value="1">启用</option>
+	           </#if>
+	           <#if menu_status?? && menu_status ==0>
+	              <option value="0" selected="selected">停用</option>
+	           <#else>
+	              <option value="0">停用</option>
+	           </#if>
+	          </select> 
+	          &nbsp;&nbsp;&nbsp; 
+	       </label>     
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+		</div>
+		</form>
+	</div>
+
+	<script type="text/javascript">
+		$(function(){
+			//设置分页控件  
+		})
+		
+		
+		   /*  $(p).pagination({  
+		    
+		        pageSize: 10,//每页显示的记录条数，默认为10  
+		        pageList: [5,10,15],//可以设置每页记录条数的列表  
+		        beforePageText: '第',//页数文本框前显示的汉字  
+		        afterPageText: '页    共 {pages} 页',  
+		        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',  
+		        ,
+				
+		        onBeforeRefresh:function(){ 
+		            $(this).pagination('loading'); 
+		            alert('before refresh'); 
+		            $(this).pagination('loaded'); 
+		        }
+		    });  
+		    */
+    
+		function dataGripSelectPage(pageNumber,pageSize){
+			$("#pageNo").val(pageNumber);
+			$("#pageSize").val(pageSize);
+			$("form").submit();
+		}
+	</script>
+	</body>
+</html>

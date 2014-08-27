@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <classPathEntry location="D:/dev_tools/maven/m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar"/>
+  <context id="context1" targetRuntime="Ibatis2Java5">
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/x_ecommerce?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true" userId="root" password="" />
+    <javaModelGenerator targetPackage="com.xec.sso.model.generator" targetProject="x_ecommerce-sso-api" />
+    <sqlMapGenerator targetPackage="com.xec.sso.dao.generator" targetProject="x_ecommerce-sso-api" />
+    <javaClientGenerator targetPackage="com.xec.sso.dao.generator" targetProject="x_ecommerce-sso-api" type="SPRING" />
+    <table schema="x_ecommerce" tableName="xec_uuc_user_info" domainObjectName="UserInfo">
+    </table>
+    <table schema="x_ecommerce" tableName="xec_sso_login_trace" domainObjectName="UserLoginTrace">
+    </table>
+  </context>
+</generatorConfiguration>

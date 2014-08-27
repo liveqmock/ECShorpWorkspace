@@ -1,0 +1,29 @@
+<!DOCTYPE html >
+<html>
+<head>
+<#include "/commons/manager/taglibs.html">
+<html>
+	<head>
+	<title>后台登录</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/login.css">
+	<link rel="stylesheet" type="text/css" href="${ctx}/resources/themes/easyui/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="${ctx}/resources/themes/easyui/icon.css"/>
+	<script type="text/javascript" src="${ctx}/resources/js/jquery.min.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/js/easyui/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/js/login.js"></script>
+	</head>
+ <body style="width: 100%;height: 100%;overflow: hidden;padding: 0;margin: 0;">
+       <form id="form-body">
+           <ul>
+               <li><label>账	号:</label> <input class="easyui-validatebox account form-textbox" type="text" name="loginName" data-options="required:true"></li>
+               <li><label>密	码: </label> <input class="easyui-validatebox  password form-textbox" type="password" name="password" data-options="required:true"></li>
+           </ul>
+       </form>
+
+       <div id="logo"  style="display: none;">
+           <h1>XX登录系统</h1>
+       </div>
+   </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<html>
+<head>
+<#include "/commons/manager/taglibs.html">
+<html>
+	<head>
+	<title>后台登录</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<#include "/commons/manager/head.html">
+	<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/divform.css"/>
+	<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/tablefrom.css"/>
+	<script type="text/javascript" src="${ctx}/resources/js/Validform_v5.3.2.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/js/Validform_Datatype.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/js/datatype.js"></script>
+</head>
+<body style="overflow-y: hidden" scroll="no">
+<div id="content">
+	<div id="wrapper">
+		<div id="steps">
+		<form id="formobj" action="${ctx}/category/createCategory.json" name="formobj" method="post"><input type="hidden" id="btn_sub" class="btn_sub">
+			<input name="id" type="hidden" value="${(editCat.id)!}">
+				<div class="form">
+					<label class="Validform_label"> 名称: </label> 
+					<input name="categoryName" class="inputxtlong" value="${(editCat.name)!}" datatype="s2-10" required="required"> <span class="Validform_checktip">2~8位字符</span></div>
+				<div class="form">
+					<label class="Validform_label"> 父分类: </label> 
+					<input id="bt_menu_comboTree"  class="easyui-combotree" value="${(editCat.pId)!}"  name='parentId' style="width:230px;" data-options="url:'${ctx}/category/categorylist.json',method:'get'"/>
+				</div>
+				<div class="form">
+					<label class="Validform_label"> 筛选品牌: </label> 
+				</div>
+				<div class="form">
+					<label class="Validform_label"> 页面标题: </label> 
+					<input name="pageTitle" class="inputxtlong" value="${(editCat.seoTitle)!}" datatype="s5-25"> <span class="Validform_checktip">5~25位字符</span>
+				</div>
+				<div class="form">
+					<label class="Validform_label"> 页面关键词: </label> 
+					<input name="categoryKeys" class="inputxtlong" value="${(editCat.seoKeywords)!}" datatype="s5-25"> <span class="Validform_checktip">5~25位字符</span>
+				</div>
+				<div class="form">
+					<label class="Validform_label"> 页面描述: </label> 
+					<input name="pageDesc" class="inputxtlong" value="${(editCat.seoDescription)!}" datatype="s5-25"> <span class="Validform_checktip">5~25位字符</span>
+				</div>
+				<div class="form">
+					<label class="Validform_label"> 排序: </label> 
+					<input name="orders" class="inputxtlong" value="${editCat.orders!}" datatype="n1-4"> <span class="Validform_checktip">输入数字</span>
+				</div>
+		</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	
+	$(function() {
+		$("#formobj").Validform({
+			tiptype : 4,
+			btnSubmit : "#btn_sub",
+			btnReset : "#btn_reset",
+			ajaxPost : true,
+			callback : function(data) {
+				var win = frameElement.api.opener;
+				if (data.scode === '1') {
+					frameElement.api.close();
+					win.tip("操作成功!");
+				} else {
+					if (data.scode === '0') {
+						$.messager.alert('错误', data.msg);
+						$.Hidemsg();
+					} else {
+						try {
+							var emsg = data.smsg.substring(data.smsg.indexOf('错误描述'), data.smsg.indexOf('错误信息'));
+							$.messager.alert('错误', emsg);
+							$.Hidemsg();
+						} catch (ex) {
+							$.messager.alert('错误', data.smsg + "");
+							$.Hidemsg();
+						}
+					}
+					return false;
+				}
+				win.reloadTable();
+			}
+		});
+	});
+</script>
+</body>
+</html>

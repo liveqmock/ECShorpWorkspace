@@ -1,0 +1,155 @@
+<!DOCTYPE html >
+<html>
+<head>
+<#include "/commons/manager/taglibs.html">
+<html>
+	<head>
+	<title>后台用户管理登录</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<#include "/commons/manager/head.html">
+	<style type="text/css">
+		.img-btn{
+		    margin: 0 5px;
+		    padding: 2px 0 2px 16px;
+		    cursor:pointer;
+		}
+		.img-btn:hover{
+		    border: 1px  #D4D4D4 solid;
+		}
+	</style>
+</head>
+<body>
+	<table id="bt_user"></table>
+	<script type="text/javascript">
+	var context=this;
+	var $grid = $('#bt_user');
+	$(function() {
+		$grid.treegrid({
+	        fit: true,
+	        url: ctx+'/menu/userlist.json',
+	        idField: 'id',
+	        method :"get",
+	        treeField: 'text',
+	        columns: [[
+	                {field: 'text', title: '菜单名称', width: 300},
+	                {field: 'href', title: '菜单链接', width: 300},
+	                {field: 'status', title: '状态', width: 120, align: 'center', formatter: function(value) {
+	                        if (value === 1) {
+	                            return '可用';
+	                        }
+	                        return '<font color="red">禁用</font>';
+	                    }},
+	                {field: 'id', title: '操作', width: 200, align: 'center', formatter: function(value) {
+	                        var ctrs = ['<span  title="编辑" class="img-btn icon-edit" type="update" id=' + value + '></span>', '<span title="删除" class="img-btn icon-remove" type="delete" id=' + value + '></span>'];
+	                        return ctrs.join(' ');
+	                }}
+	            ]],
+	        toolbar: [{
+	                text: '新增',
+	                iconCls: 'icon-add',
+	                handler: context.addView
+	            }],
+	        onLoadSuccess: function() {
+	            var $bodyView = $grid.data('datagrid').dc.view2;
+	            $bodyView.find('span[id]').click(function(e) {
+	                var type = $(this).attr('type');
+	                var id = $(this).attr('id');
+	                var data = $grid.treegrid('find', id);
+	                if (type === 'update') {
+	                    context.updateView(id);
+	                } else {
+	                    context.deleted(id, data.path);
+	                }
+	                e.stopPropagation();
+	            });
+	        }
+	    });
+	});
+	context.deleted = function(id, path) {
+	    $.messager.confirm('提示', '确认删除？', function(r) {
+	        if (r) {
+	            $.post(ctx + '/menu/delete.json', {id: id}, function(rsp) {
+	            	 if (rsp.scode==="1") {
+	                    $grid.treegrid('remove', id);
+	                } else {
+	                    $.alert(rsp.smsg);
+	                }
+	            });
+	        }
+	    });
+	};
+	var viewDialog;
+	context.addView = function() {
+	    viewDialog = $.dialog({
+	        title: '新增菜单',
+	        href: ctx + '/menu/createMenu',
+	        width: 450,
+	        bodyStyle: {overflow: 'hidden'},
+	        height: 300,
+	        buttons: [{
+	                text: '提交',
+	                handler: context.doAdd
+	            }]
+	    });
+	};
+	context.doAdd = function() {
+	    $bt_menu_from = $('#bt_menu_from');
+	    if ($bt_menu_from.form('validate')) {
+	        $.post(ctx + '/menu/createMenu.json', $bt_menu_from.toJson(), function(rsp) {
+	            if (rsp.scode==="1") {
+	                $grid.treegrid('reload');
+	                viewDialog.dialog('close');
+	            } else {
+	                $.alert(rsp.smsg);
+	            }
+	        });
+	    }
+	};
+	context.doUpdate = function() {
+	    $bt_menu_from = $('#bt_menu_from');
+	    if ($bt_menu_from.form('validate')) {
+	        $.post(ctx + '/menu/updateMenu.json', $bt_menu_from.toJson(), function(rsp) {
+	            if (rsp.scode==="1") {
+	                $grid.treegrid('reload');
+	                viewDialog.dialog('close');
+	            } else {
+	                $.alert(rsp.smsg);
+	            }
+	        });
+	    }
+	};
+
+	context.updateView = function(mid) {
+	    viewDialog = $.dialog({
+	        title: '更新菜单',
+	        href: ctx + '/menu/edit?id=' + mid,
+	        width: 450,
+	        bodyStyle: {overflow: 'hidden'},
+	        height: 300,
+	        buttons: [{
+	                text: '提交',
+	                handler: context.doUpdate
+	            }]
+	    });
+	};
+	/**
+	* 查询条件转换成JSON
+	*/
+	function queryParams(){
+		var dg = $("#tableGrid");
+		var opts = dg.datagrid('options');
+		var pageNumber = $(opts).pageNumber;   //pageNumber为datagrid的当前页码
+    	var pageSize = $(opts).pageSize;   
+		var params={"menuName":$("menuName").val(),"menuStatus":$("#menuStatus").val(),"page":pageNumber,"rows":pageSize}
+	    return params;
+	}
+		
+	function search(){
+		var dg = $("#tableGrid");
+		var opts = dg.datagrid('options');
+		opts.pagination=true;
+		getData(dg,opts);
+	}
+	</script>
+	</body>
+</html>

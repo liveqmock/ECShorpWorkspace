@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+            http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-lazy-init="true">
+	
+	<!-- 隐式地向 Spring 容器注册 AutowiredAnnotationBeanPostProcessor、 CommonAnnotationBeanPostProcessor、 PersistenceAnnotationBeanPostProcessor 以及 equiredAnnotationBeanPostProcessor 
+		这 4 个 BeanPostProcessor。 在配置文件中使用 context 命名空间之前， 必须在 <beans> 元素中声明 context 命名空间。 -->
+	<!-- <context:component-scan/> 配置项不但启用了对类包进行扫描 以实施注释驱动 Bean 定义的功能， 同时还启用了注释驱动自动注入的功能 （即还隐式地在内部注册了 AutowiredAnnotationBeanPostProcessor 和 CommonAnnotationBeanPostProcessor） -->
+	<!-- <cache:annotation-driven cache-manager="cacheManager" proxy-target-class="false" mode="proxy"/> -->
+
+	<cache:annotation-driven cache-manager="cacheManager" />
+	<!-- cacheManager工厂类 -->
+	<bean id="ehcacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:configLocation="classpath:cache/sso-ehcache.xml" p:shared="false"
+		lazy-init="false" />
+	<!-- 声明cacheManager -->
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cacheManager-ref="ehcacheManagerFactory" lazy-init="false" />
+	
+	<!--  -->
+	<bean id="performanceMonitor" class="com.ecs.commons.logger.PerfInterceptor" />
+	<aop:config>
+		<aop:pointcut id="allServiceMethods" expression="execution(* com.xec.sso.biz.*.*(..))" />
+		<aop:pointcut id="allDAOMethods" expression="execution(* com.xec.sso.dao.*.*(..))" />
+		<aop:advisor pointcut-ref="allServiceMethods" advice-ref="performanceMonitor"
+			order="1" />
+		<aop:advisor pointcut-ref="allDAOMethods" advice-ref="performanceMonitor"
+			order="2" />
+	</aop:config>
+	
+	<!-- 异步线程池 -->
+	<bean id="ssoTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数，默认为1 -->
+		<property name="corePoolSize" value="10" />
+		<!-- 最大线程数，默认为Integer.MAX_VALUE -->
+		<property name="maxPoolSize" value="50" />
+		<!-- 队列最大长度，一般需要设置值>=notifyScheduledMainExecutor.maxNum；默认为Integer.MAX_VALUE -->
+		<property name="queueCapacity" value="1000" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者 -->
+		<property name="rejectedExecutionHandler">
+			<!-- AbortPolicy:直接抛出java.util.concurrent.RejectedExecutionException异常 -->
+			<!-- CallerRunsPolicy:主线程直接执行该任务，执行完之后尝试添加下一个任务到线程池中，可以有效降低向线程池内添加任务的速度 -->
+			<!-- DiscardOldestPolicy:抛弃旧的任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+			<!-- DiscardPolicy:抛弃当前任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>
+
+
+
+	<!-- mybatis配置 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> <property name="dataSource" ref="dataSource" /> <property name="configLocation" 
+		value="classpath:mybatis-config.xml" /> </bean> <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"> <property name="basePackage" value="com.xiu.common.dao" 
+		/> <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" /> </bean> -->
+	<!-- comment配置 -->
+	<bean id="sqlSessionFactorySSO" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:sso-mybatis-config.xml" />
+	</bean>
+	<bean id="mapperScannerConfigurerSSO" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.ecs.sso.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactorySSO" />
+	</bean>
+
+	<!-- Activates scanning of @Repository -->
+	<context:component-scan base-package="com.ecs.sso.dao" />
+
+	<!-- Enable @Transactional support -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<context:component-scan base-package="com.ecs.sso.biz" />
+	<context:component-scan base-package="com.ecs.sso.service" />
+</beans>

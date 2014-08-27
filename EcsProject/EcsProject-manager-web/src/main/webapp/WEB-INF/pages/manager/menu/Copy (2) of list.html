@@ -1,0 +1,169 @@
+<!DOCTYPE html >
+<html>
+<head>
+<#include "/commons/manager/taglibs.html">
+<html>
+	<head>
+	<title>后台登录</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<#include "/commons/manager/head.html">
+</head>
+<body>
+	<div style="height:500px;">
+		<table  id="tableGrid" title="菜单管理列表" 
+				data-options="rownumbers:true,singleSelect:true,autoRowHeight:false,fit:true,pagination:false,pageNumber:1,pageSize:15,method:'get',toolbar:'#tb'">
+			<thead>
+				<tr>
+					<th data-options="field:'id',width:80">菜单ID</th>
+					<th data-options="field:'menuName',width:200">菜单名称</th>
+					<th data-options="field:'menuUrl',width:180,align:'right'">菜单URL</th>
+					<th data-options="field:'parentName',width:100,align:'right'">父级菜单</th>
+					<th data-options="field:'memo',width:200">备注信息</th>
+					<th data-options="field:'status',width:80">菜单状态</th>
+					<th data-options="field:'operation',width:100,align:'center'">执行操作</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div id="tb" style="padding:5px;height:auto">
+		<div style="margin-bottom:5px">
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>
+		</div>
+		<form method="GET" action="${ctx}/menulist?format=json">
+		<input name="pageNo" id="pageNo" type="hidden"/>
+		<input name="pageSize" id="pageSize" type="hidden"/>
+		<div>
+		  &nbsp;&nbsp;菜单名称：
+		  <input name="menuName" type="text" id="menuName" value="${(menuName!'')?html}" size="20" />
+	          &nbsp;&nbsp;&nbsp;
+	      <label> 菜单状态:
+	          <select name="menuStatus" id="menuStatus">
+	           <option value="">--请选择--</option>
+	           <#if menuStatus?? && menuStatus ==1>
+	              <option value="1" selected="selected">启用</option>
+	           <#else>
+	              <option value="1">启用</option>
+	           </#if>
+	           <#if menuStatus?? && menuStatus ==0>
+	              <option value="0" selected="selected">停用</option>
+	           <#else>
+	              <option value="0">停用</option>
+	           </#if>
+	          </select> 
+	          &nbsp;&nbsp;&nbsp; 
+	       </label>     
+			<a href="javascript:void(0)" id="searchBnt" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+		</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+	var $dtcTable = $("#tableGrid");
+	$(function() {	
+	     //initPage();
+	     // http://www.cnblogs.com/wintalen/archive/2011/06/10/2077164.html
+	     $dtcTable.datagrid({
+	          url : ctx+'/jsonmenulist.json',
+	          rownumbers : true,     // 显示行号列
+	          striped : true,     // 显示斑马线效果
+	          pagination : true,     // 自动展开/收缩列的大小，以适应网格的宽度，防止水平滚动
+	          singleSelect : false,     // true: 只允许选择一行
+	          //checkOnSelect : false,     // true，当用户点击行的时候该复选框就会被选中或取消选中
+	          pageSize : 20,
+	          width : 1000,
+	          collapsible : true,
+	          queryParams:  queryParams(),
+	          onBeforeLoad: function(param){
+	        	  console.log(param);
+	          },
+	          onLoadSuccess: function(data) {
+	        	  if(!!data){
+		        	  //var rows=data.rows[0].data.page.result;
+		        	  //var r={"total":data.rows[0].data.page.totalCount,"rows":rows};
+		        	  //$(this).datagrid('loadData',r);
+	        	  }
+	          }
+	     });
+	});
+	/**
+	* 查询条件转换成JSON
+	*/
+	function queryParams(){
+		var dg = $("#tableGrid");
+		var opts = dg.datagrid('options');
+		var pageNumber = $(opts).pageNumber;   //pageNumber为datagrid的当前页码
+    	var pageSize = $(opts).pageSize;   
+		var params={"menuName":$("menuName").val(),"menuStatus":$("#menuStatus").val(),"page":pageNumber,"rows":pageSize}
+	    return params;
+	}
+		
+	function search(){
+		var dg = $("#tableGrid");
+		var opts = dg.datagrid('options');
+		opts.pagination=true;
+		getData(dg,opts);
+	}
+	
+		/* $(function(){
+			/* var dg = $("#tableGrid");
+			var opts = dg.datagrid('options');
+			var pager = dg.datagrid('getPager');
+			pager.pagination({
+				onSelectPage:function(pageNum, pageSize){
+					opts.pageNumber = pageNum;
+					opts.pageSize = pageSize;
+					pager.pagination('refresh',{
+						pageNumber:pageNum,
+						pageSize:pageSize
+					});
+					getData(dg,opts);
+				},
+				pageList: [10, 30, 50, 100], //可以设置每页记录条数的列表           
+                beforePageText: '第', //页数文本框前显示的汉字           
+                afterPageText: '页    共 {pages} 页',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                pagination:true
+			}); */
+			/* $('#tableGrid').datagrid("load",pagerFilter());//.datagrid('loadData', getData());
+			$('#tableGrid').datagrid("loadFilter",pagerFilter());//.datagrid('loadData', getData());
+			//$('#tableGrid').datagrid("loader":{onLoadSuccess: function(){pagerFilter();}});
+			
+			$('#tableGrid').datagrid({
+				onLoadSuccess:function(data){
+					alert(data.data);
+				}
+			});
+			$("#searchBnt").click(function(){
+				search();
+			}); 
+			//pagerFilter();
+		}); */
+
+		
+		
+		   /*  $(p).pagination({  
+		    
+		        pageSize: 10,//每页显示的记录条数，默认为10  
+		        pageList: [5,10,15],//可以设置每页记录条数的列表  
+		        beforePageText: '第',//页数文本框前显示的汉字  
+		        afterPageText: '页    共 {pages} 页',  
+		        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',  
+		        ,
+				
+		        onBeforeRefresh:function(){ 
+		            $(this).pagination('loading'); 
+		            alert('before refresh'); 
+		            $(this).pagination('loaded'); 
+		        }
+		    });  
+		    */
+    
+		function dataGripSelectPage(pageNumber,pageSize){
+			$("#pageNo").val(pageNumber);
+			$("#pageSize").val(pageSize);
+			$("form").submit();
+		}
+	</script>
+	</body>
+</html>

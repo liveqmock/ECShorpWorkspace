@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecs.sso.dao.UserInfoDao">
+	<resultMap id="userInfoModelResult" type="userInfoModel">
+		<id column="USER_ID" property="userId" />
+		<result column="USER_NAME" property="userName" />
+		<result column="PASSWORD" property="password" />
+		<result column="NICK_NAME" property="nickName" />
+		<result column="IS_ENABLED" property="isEnabled" />
+		<result column="MOBILE" property="mobile" />
+		<result column="USER_LEVEL" property="userLevel" />
+		<result column="USER_STATUS" property="userStatus" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="EMAIL_AUTHEN_STATUS" property="emailAuthenStatus" />
+		<result column="MOBILE_AUTHEN_STATUS" property="mobileAuthenStatus" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		USER_ID, USER_NAME, PASSWORD, NICK_NAME, MOBILE, IS_ENABLED,USER_LEVEL, USER_STATUS,CREATE_TIME,UPDATE_TIME,EMAIL_AUTHEN_STATUS,MOBILE_AUTHEN_STATUS
+	</sql>
+	<select id="getById" resultMap="userInfoModelResult" parameterType="java.lang.Long">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ECS_USER_INFO
+		WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="getByUserName" resultMap="userInfoModelResult" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ECS_USER_INFO
+		WHERE USER_NAME = #{userName}
+	</select>
+
+	<select id="countByUserName" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		COUNT(1) c
+		FROM ECS_USER_INFO
+		WHERE USER_NAME = #{userName}
+	</select>
+	<select id="getByMobile" resultMap="userInfoModelResult" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ECS_USER_INFO
+		WHERE MOBILE = #{mobile}
+	</select>
+
+	<select id="countByMobile" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT
+		COUNT(1) c
+		FROM ECS_USER_INFO
+		WHERE MOBILE = #{mobile}
+	</select>
+
+	<select id="getByUsernameAndPwd" resultMap="userInfoModelResult" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		FROM ECS_USER_INFO t
+		WHERE t.USER_NAME=#{userName} and t.PASSWORD=#{password}
+	</select>
+
+	<select id="getByMobileAndPwd" resultMap="userInfoModelResult" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ECS_USER_INFO t
+		WHERE t.MOBILE=#{mobile} and t.PASSWORD=#{password}
+	</select>
+
+	<insert id="insert" parameterType="userInfoModel">
+		<![CDATA[
+		insert into ECS_USER_INFO
+		(
+		USER_NAME,
+		PASSWORD,
+		NICK_NAME,
+		USER_LEVEL,
+		MOBILE,
+		IS_ENABLED,
+		USER_STATUS,
+		USER_EMAIL,
+		EMAIL_AUTHEN_STATUS,
+		MOBILE_AUTHEN_STATUS)
+		values (
+		#{userName}, #{password},#{nickName},#{userLevel}, #{mobile},#{isEnabled},#{userStatus},
+		#{userEmail},#{emailAuthenStatus},#{mobileAuthenStatus})
+		]]>
+	</insert>
+	<update id="updateById" parameterType="userInfoModel">
+		update ECS_USER_INFO
+		<set>
+			<if test="userName != null">
+				USER_NAME = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				PASSWORD = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="userLevel != null">
+				USER_LEVEL = #{userLevel,jdbcType=INTEGER},
+			</if>
+			<if test="userStatus != null">
+				USER_STATUS = #{userStatus,jdbcType=INTEGER},
+			</if>
+			<if test="nickName != null">
+				NICK_NAME = #{nickName,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				MOBILE = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="eMail != null">
+				USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="emailAuthenStatus != null">
+				EMAIL_AUTHEN_STATUS = #{emailAuthenStatus,jdbcType=INTEGER},
+			</if>
+			<if test="mobileAuthenStatus != null">
+				MOBILE_AUTHEN_STATUS = #{mobileAuthenStatus,jdbcType=INTEGER},
+			</if>
+		</set>
+		where USER_ID = #{userId,jdbcType=INTEGER}
+	</update>
+</mapper>

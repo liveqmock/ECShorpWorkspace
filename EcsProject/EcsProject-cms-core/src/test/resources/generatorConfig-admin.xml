@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="D:/dev_tools/maven/m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar" />
+	<!-- targetRuntime mybatis3 XMLMAPPER 按接口生成 Ibatis2Java5:按ibatis2 SPRING方式生成 -->
+	<context id="context1" targetRuntime="MyBatis3">
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 查询分页 -->
+		<plugin type="com.ecs.commons.utils.PaginationPlugin" />
+		<!-- Example改名 -->
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+		<!-- 不生成注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/ecs_cms?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true"
+			userId="root" password="123456" />
+		<javaModelGenerator targetPackage="com.ecs.cms.core.admin.mybatis.pojo"
+			targetProject="EcsProject-cms-core" />
+		<sqlMapGenerator targetPackage="com.ecs.cms.core.admin.mybatis.mapper"
+			targetProject="EcsProject-cms-core" />
+		<javaClientGenerator targetPackage="com.ecs.cms.core.admin.mybatis.mapper"
+			targetProject="EcsProject-cms-core" type="XMLMAPPER" />
+
+		<table schema="ecs_cms" tableName="ecs_mgr_menus"
+			domainObjectName="EcsMgrMenus">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecs_cms" tableName="ecs_mgr_role_menu"
+			domainObjectName="EcsMgrRoleMenu">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecs_cms" tableName="ecs_mgr_roles"
+			domainObjectName="EcsMgrRoles">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecs_cms" tableName="ecs_mgr_user_role"
+			domainObjectName="EcsMgrUserRole">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecs_cms" tableName="ecs_mgr_user_usergroup"
+			domainObjectName="EcsMgrUserUsergroup">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecs_cms" tableName="ecs_mgr_usergroup"
+			domainObjectName="EcsMgrUsergroup">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecs_cms" tableName="ecs_mgr_users"
+			domainObjectName="EcsMgrUsers">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+	</context>
+</generatorConfiguration>

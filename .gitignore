@@ -1,3 +1,13 @@
+###############
+#    folder   #
+###############
+.metadata
+.settings
+.project
+.classpath
+target
+RemoteSystemsTempFiles
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

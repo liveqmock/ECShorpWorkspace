@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="D:/dev_tools/maven/m2/repository/mysql/mysql-connector-java/5.1.22/mysql-connector-java-5.1.22.jar" />
+	<!-- targetRuntime mybatis3 XMLMAPPER 按接口生成 Ibatis2Java5:按ibatis2 SPRING方式生成 -->
+	<context id="context1" targetRuntime="MyBatis3">
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 查询分页 -->
+		<plugin type="com.ecs.commons.utils.PaginationPlugin" />
+		<!-- Example改名 -->
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Criteria" />
+		</plugin>
+		<!-- 不生成注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/ecshop?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true"
+			userId="root" password="123456" />
+		<javaModelGenerator targetPackage="com.ecs.commons.mybatis.pojo"
+			targetProject="EcsProject-commons" />
+		<sqlMapGenerator targetPackage="com.ecs.commons.mybatis.mapper"
+			targetProject="EcsProject-commons" />
+		<javaClientGenerator targetPackage="com.ecs.commons.mybatis.mapper"
+			targetProject="EcsProject-commons" type="XMLMAPPER" />
+		<table schema="ecshop" tableName="ecs_account_log"
+			domainObjectName="EcsAccountLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_ad" domainObjectName="EcsAd">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_ad_custom"
+			domainObjectName="EcsAdCustom">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_ad_position"
+			domainObjectName="EcsAdPosition">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_admin_action"
+			domainObjectName="EcsAdminAction">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_admin_log"
+			domainObjectName="EcsAdminLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_admin_message"
+			domainObjectName="EcsAdminMessage">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_admin_user"
+			domainObjectName="EcsAdminUser">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_adsense" domainObjectName="EcsAdsense">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_affiliate_log"
+			domainObjectName="EcsAffiliateLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_agency" domainObjectName="EcsAgency">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_area_region"
+			domainObjectName="EcsAreaRegion">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_article" domainObjectName="EcsArticle">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_article_cat"
+			domainObjectName="EcsArticleCat">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_attribute"
+			domainObjectName="EcsAttribute">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_auction_log"
+			domainObjectName="EcsAuctionLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_auto_manage"
+			domainObjectName="EcsAutoManage">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_back_goods"
+			domainObjectName="EcsBackGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_back_order"
+			domainObjectName="EcsBackOrder">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_bonus_type"
+			domainObjectName="EcsBonusType">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_booking_goods"
+			domainObjectName="EcsBookingGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_brand" domainObjectName="EcsBrand">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_card" domainObjectName="EcsCard">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_cart" domainObjectName="EcsCart">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_cat_recommend"
+			domainObjectName="EcsCatRecommend">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_category"
+			domainObjectName="EcsCategory">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_collect_goods"
+			domainObjectName="EcsCollectGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_comment" domainObjectName="EcsComment">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_crons" domainObjectName="EcsCrons">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_delivery_goods"
+			domainObjectName="EcsDeliveryGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_delivery_order"
+			domainObjectName="EcsDeliveryOrder">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_email_list"
+			domainObjectName="EcsEmailList">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_email_sendlist"
+			domainObjectName="EcsEmailSendlist">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_error_log"
+			domainObjectName="EcsErrorLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_exchange_goods"
+			domainObjectName="EcsExchangeGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_favourable_activity"
+			domainObjectName="EcsFavourableActivity">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_feedback"
+			domainObjectName="EcsFeedback">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_friend_link"
+			domainObjectName="EcsFriendLink">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_goods" domainObjectName="EcsGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_goods_activity"
+			domainObjectName="EcsGoodsActivity">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_goods_article"
+			domainObjectName="EcsGoodsArticle">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_goods_attr"
+			domainObjectName="EcsGoodsAttr">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_goods_cat"
+			domainObjectName="EcsGoodsCat">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_goods_gallery"
+			domainObjectName="EcsGoodsGallery">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_goods_type"
+			domainObjectName="EcsGoodsType">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_group_goods"
+			domainObjectName="EcsGroupGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_keywords"
+			domainObjectName="EcsKeywords">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_link_goods"
+			domainObjectName="EcsLinkGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_mail_templates"
+			domainObjectName="EcsMailTemplates">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_member_price"
+			domainObjectName="EcsMemberPrice">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_nav" domainObjectName="EcsNav">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_order_action"
+			domainObjectName="EcsOrderAction">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_order_goods"
+			domainObjectName="EcsOrderGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_order_info"
+			domainObjectName="EcsOrderInfo">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_pack" domainObjectName="EcsPack">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_package_goods"
+			domainObjectName="EcsPackageGoods">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_pay_log" domainObjectName="EcsPayLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_payment" domainObjectName="EcsPayment">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_plugins" domainObjectName="EcsPlugins">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_products"
+			domainObjectName="EcsProducts">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_reg_extend_info"
+			domainObjectName="EcsRegExtendInfo">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_reg_fields"
+			domainObjectName="EcsRegFields">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_region" domainObjectName="EcsRegion">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_role" domainObjectName="EcsRole">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_searchengine"
+			domainObjectName="EcsSearchengine">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_sessions"
+			domainObjectName="EcsSessions">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_sessions_data"
+			domainObjectName="EcsSessionsData">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_shipping"
+			domainObjectName="EcsShipping">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_shipping_area"
+			domainObjectName="EcsShippingArea">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_shop_config"
+			domainObjectName="EcsShopConfig">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_snatch_log"
+			domainObjectName="EcsSnatchLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_stats" domainObjectName="EcsStats">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_suppliers"
+			domainObjectName="EcsSuppliers">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_tag" domainObjectName="EcsTag">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_template"
+			domainObjectName="EcsTemplate">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_topic" domainObjectName="EcsTopic">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_user_account"
+			domainObjectName="EcsUserAccount">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_user_address"
+			domainObjectName="EcsUserAddress">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_user_bonus"
+			domainObjectName="EcsUserBonus">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_user_feed"
+			domainObjectName="EcsUserFeed">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_user_rank"
+			domainObjectName="EcsUserRank">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_users" domainObjectName="EcsUsers">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_virtual_card"
+			domainObjectName="EcsVirtualCard">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_volume_price"
+			domainObjectName="EcsVolumePrice">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_vote" domainObjectName="EcsVote">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_vote_log"
+			domainObjectName="EcsVoteLog">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_vote_option"
+			domainObjectName="EcsVoteOption">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+		<table schema="ecshop" tableName="ecs_wholesale"
+			domainObjectName="EcsWholesale">
+			<property name="rootClass" value="com.ecs.commons.model.BaseObject" />
+		</table>
+
+
+
+		<!-- <table schema="x_ecommerce" tableName="product_brand_detail" domainObjectName="ProductBrandDetail" 
+			enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+			enableSelectByExample="false" selectByExampleQueryId="false"> <property name="rootClass" 
+			value="com.xec.common.model.BaseObject" /> </table> <table schema="x_ecommerce" 
+			tableName="product_class" domainObjectName="ProductCategory" enableCountByExample="false" 
+			enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" 
+			selectByExampleQueryId="false"> <property name="rootClass" value="com.xec.common.model.BaseObject" 
+			/> </table> <table schema="x_ecommerce" tableName="product_inventory" domainObjectName="ProductInventory" 
+			enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+			enableSelectByExample="false" selectByExampleQueryId="false"> <property name="rootClass" 
+			value="com.xec.common.model.BaseObject" /> </table> <table schema="x_ecommerce" 
+			tableName="product_price" domainObjectName="ProductPrice" enableCountByExample="false" 
+			enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" 
+			selectByExampleQueryId="false"> <property name="rootClass" value="com.xec.common.model.BaseObject" 
+			/> </table> <table schema="x_ecommerce" tableName="product_sku_info" domainObjectName="ProductSkuInfo" 
+			enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" 
+			enableSelectByExample="false" selectByExampleQueryId="false"> <property name="rootClass" 
+			value="com.xec.common.model.BaseObject" /> </table> -->
+	</context>
+</generatorConfiguration>

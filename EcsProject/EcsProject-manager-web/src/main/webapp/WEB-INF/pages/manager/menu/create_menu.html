@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<html>
+<head>
+<#include "/commons/manager/taglibs.html">
+<html>
+	<head>
+	<title>后台登录</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<#include "/commons/manager/head.html">
+	<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/divform.css"/>
+	<link rel="stylesheet" type="text/css" href="${ctx}/resources/css/tablefrom.css"/>
+	<script type="text/javascript" src="${ctx}/resources/js/Validform_v5.3.2.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/js/Validform_Datatype.js"></script>
+	<script type="text/javascript" src="${ctx}/resources/js/datatype.js"></script>
+</head>
+<body style="overflow-y: hidden" scroll="no">
+<div id="content">
+	<div id="wrapper">
+		<div id="steps">
+			<form id="formobj" action="${ctx}/menu/createMenu.json" name="formobj" method="post"><input type="hidden" id="btn_sub" class="btn_sub">
+		   		<div class="form">
+					<label class="Validform_label"> 父项: </label>
+					<input id="bt_menu_comboTree"  class="easyui-combotree" value="${(editMenu.pId)!}"  name='parentId'  class="inputxtlong" style="width:230px;" data-options="url:'${ctx}/menu/jsonmenulist.json',method:'get',required:true"> <span class="Validform_checktip">请选择上级菜单</span>
+		        </div>
+		        <div class="form">
+					<label class="Validform_label"> 名称: </label> 
+		            <input name="menuName" type="text" value="${(editMenu.text)!}" class="easyui-validatebox" required="required"  class="inputxtlong" datatype="s2-10" style="width:230px;"/> <span class="Validform_checktip">2~8位字符</span>
+				</div>
+		        <div class="form">
+					<label class="Validform_label"> 链接： </label> 
+		            <input name="href" type="text" value="${(editMenu.href)!}" style="width: 352px;"  class="inputxtlong"/>
+				</div>
+		        <div class="form">
+		            <label class="Validform_label">状态：</label> 
+	            	<#assign check=0/>
+	            	<#if editMenu??>
+	            		<#if editMenu.status==1>
+	            			<#assign check=1/>
+	            		</#if>	
+	            	</#if>
+	            	<input name="status" type="radio" ${(check==0)?string('checked=checked','')} value="0"/>禁用<input name="status" type="radio" ${(check==0)?string('','checked=checked')} value="1"/>可用 
+		        </div>
+		        <div class="form">
+					<label class="Validform_label">描述： </label> 
+		            <input name="memo" type="text" value="${(editMenu.memo)!}" style="width: 350px;"  class="inputxtlong"/>
+				</div>
+		    <input type="hidden" name="id" value="${(editMenu.id)!}"/>
+		</form>
+	</div>
+	</div>
+</div>
+<script type="text/javascript">
+	
+	$(function() {
+		$("#formobj").Validform({
+			tiptype : 4,
+			btnSubmit : "#btn_sub",
+			btnReset : "#btn_reset",
+			ajaxPost : true,
+			callback : function(data) {
+				var win = frameElement.api.opener;
+				if (data.scode === '1') {
+					frameElement.api.close();
+					win.tip("操作成功!");
+				} else {
+					if (data.scode === '0') {
+						$.messager.alert('错误', data.msg);
+						$.Hidemsg();
+					} else {
+						try {
+							var emsg = data.smsg.substring(data.smsg.indexOf('错误描述'), data.smsg.indexOf('错误信息'));
+							$.messager.alert('错误', emsg);
+							$.Hidemsg();
+						} catch (ex) {
+							$.messager.alert('错误', data.smsg + "");
+							$.Hidemsg();
+						}
+					}
+					return false;
+				}
+				win.reloadTable();
+			}
+		});
+	});
+</script>
+</body>
+</html>

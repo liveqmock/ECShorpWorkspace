@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache"  xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+            http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-lazy-init="true">
+
+	<!-- Activates scanning of @Autowired -->
+	<context:annotation-config />
+	<import resource="applicationContext-dao.xml" />
+	<import resource="applicationContext-cache.xml" />
+
+
+	<!-- =================================================================== -->
+	<!-- AOP: Configuration and Aspects -->
+	<!-- =================================================================== -->
+	<aop:config>
+		<aop:advisor id="managerTx" advice-ref="managerAdvice"
+			pointcut="execution(* *.*Manager.*(..))" order="1" />
+	</aop:config>
+
+	<!-- Enable @Transactional support -->
+	<tx:annotation-driven />
+
+	<!-- Enable @AspectJ support -->
+	<aop:aspectj-autoproxy />
+
+	<tx:advice id="managerAdvice">
+		<tx:attributes>
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置事务管理器，使用jdbc事务 -->
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- Enable @Transactional support -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+
+	<!-- cache 配置 -->
+
+	<!-- 隐式地向 Spring 容器注册 AutowiredAnnotationBeanPostProcessor、 CommonAnnotationBeanPostProcessor、 
+		PersistenceAnnotationBeanPostProcessor 以及 equiredAnnotationBeanPostProcessor 
+		这 4 个 BeanPostProcessor。 在配置文件中使用 context 命名空间之前， 必须在 <beans> 元素中声明 context 
+		命名空间。 -->
+	<!-- <context:component-scan/> 配置项不但启用了对类包进行扫描 以实施注释驱动 Bean 定义的功能， 同时还启用了注释驱动自动注入的功能 
+		（即还隐式地在内部注册了 AutowiredAnnotationBeanPostProcessor 和 CommonAnnotationBeanPostProcessor） -->
+	<!-- <cache:annotation-driven cache-manager="cacheManager" proxy-target-class="false" 
+		mode="proxy"/> -->
+
+	<cache:annotation-driven cache-manager="cacheManager" />
+	
+	<!-- cacheManager工厂类 -->
+	<bean id="ehcacheManagerFactory"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:cache/ehcache.xml" p:shared="false"
+		lazy-init="false" />
+
+	<!-- 声明cacheManager -->
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cacheManager-ref="ehcacheManagerFactory" lazy-init="false" />
+
+
+
+
+	<!-- mybatis配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage"
+			value="com.ecs.manager.core.admin.mybatis.mapper,com.ecs.manager.core.dao,com.ecs.manager.core.mybatis.mapper" />
+	</bean>
+
+	<!-- Activates scanning of @Service and @Repository -->
+	<context:component-scan base-package="com.ecs.manager.core.admin.service" />
+	<context:component-scan base-package="com.ecs.manager.core.cache" />
+	<context:component-scan base-package="com.ecs.manager.core.service" />
+	<context:component-scan base-package="com.ecs.manager.core.mybatis.mapper" />
+	<context:component-scan base-package="com.ecs.manager.core.dao" />
+	<context:component-scan base-package="com.ecs.manager.core.admin.mybatis.mapper" />
+
+</beans>
