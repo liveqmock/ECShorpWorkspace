@@ -16,10 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ecs.cms.core.admin.MenuService;
-import com.ecs.cms.core.admin.AdminUserService;
 import com.ecs.cms.core.admin.mybatis.pojo.EcsMgrMenus;
 import com.ecs.cms.core.admin.mybatis.pojo.EcsMgrUsers;
+import com.ecs.cms.core.admin.service.AdminUserService;
 import com.ecs.cms.web.admin.constants.Constants;
 import com.ecs.cms.web.admin.utils.AdminSessionUtil;
 import com.ecs.cms.web.mvc.view.JsonPackageWrapper;
